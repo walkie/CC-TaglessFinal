@@ -1,8 +1,8 @@
 {-# LANGUAGE
-      FlexibleInstances,
       NoMonomorphismRestriction,
       TypeSynonymInstances #-}
 
+-- | Variational math expressions.
 module Examples.MathExpressions where
 
 import Data.Variational
