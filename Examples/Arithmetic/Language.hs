@@ -34,8 +34,8 @@ eval :: Int -> Int
 eval = id
 
 -- | Pretty print an expression.
-pretty :: String -> String
-pretty = id
+pretty :: String -> IO ()
+pretty = putStrLn
 
 
 --
@@ -49,12 +49,12 @@ instance Exp a => Exp (V a) where
   add = compose add
 
 -- | The variation semantics of the evaluated expressions.
-veval :: V Int -> V Int
-veval = id
+veval :: V Int -> IO ()
+veval = putStrLn . psem
 
 -- | The variation semantics of the pretty-printed expressions.
-vpretty :: V String -> V String
-vpretty = id
+vpretty :: V String -> IO ()
+vpretty = putStrLn . psemS
 
 
 --

@@ -5,6 +5,8 @@
 
 module Data.Variational where
 
+import Data.List (intersperse)
+
 --
 -- * Decisions
 --
@@ -62,6 +64,15 @@ qualify :: QTag -> V a -> V a
 qualify q va = do 
     (d,a) <- va
     ifMerge a [q] d
+
+-- | Get a pretty version of the semantics.
+psem :: Show a => V a -> String
+psem = psemS . vmap show
+
+-- | Pretty semantics with string values.
+psemS :: V String -> String
+psemS = unlines . map entry
+  where entry (d,s) = concat (intersperse "," (map show d)) ++ "  ==>  " ++ s
 
 
 --
