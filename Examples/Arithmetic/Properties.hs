@@ -1,9 +1,9 @@
 
--- | Compositional property checking of variational math expressions.
-module Examples.PropCheck where
+-- | Compositional property checking of variational arithmetic expressions.
+module Examples.Arithmetic.Properties where
 
 import Data.Variational
-import Examples.MathExpressions
+import Examples.Arithmetic.Language
 
 --
 -- * Simple properties

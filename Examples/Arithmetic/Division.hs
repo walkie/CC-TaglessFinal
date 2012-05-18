@@ -2,15 +2,15 @@
       NoMonomorphismRestriction,
       TypeSynonymInstances #-}
 
--- | Extension of math expressions with division and checking for
+-- | Extension of arithmetic expressions with division and checking for
 --   divide-by-zero errors.
-module Examples.DivZero where
+module Examples.Arithmetic.Division where
 
 import Prelude hiding (div)
 import qualified Prelude
 
 import Data.Variational
-import Examples.MathExpressions
+import Examples.Arithmetic.Language
 
 --
 -- * Extend object language with a division operation
@@ -18,10 +18,13 @@ import Examples.MathExpressions
 
 class Div a where
   div :: a -> a -> a
+
 instance Div Int where
   div = Prelude.div
+
 instance Div String where
   div l r = "(" ++ l ++ "/" ++ r ++ ")"
+
 instance Div a => Div (V a) where
   div = compose div
 
