@@ -65,16 +65,16 @@ chcA = chc "A"
 chcB = chc "B"
 
 -- | Plain expression.
-e0 = lit 1 `add` lit 3
+e0 = neg (lit 1) `add` lit 2
 -- | Introducing a choice.
-e1 = chcA (lit 1) (lit 2) `add` lit 3
+e1 = e0 `add` chcA (lit 3) (lit 4)
 -- | Synchronized choices.
-e2 = chcA (lit 1) (lit 2) `add` chcA (lit 3) (lit 4)
+e2 = neg e1 `add` chcA (lit 5) (lit 6)
 -- | Independent choices.
-e3 = chcA (lit 1) (lit 2) `add` chcB (lit 3) (lit 4)
+e3 = neg e1 `add` chcB (lit 5) (lit 6)
 -- | Nested plain expressions.
-e4 = chcA (lit 1) (lit 2) `add` chcB (lit 3) (lit 4 `add` lit 5)
+e4 = neg e1 `add` chcB (lit 5) (lit 6 `add` lit 7)
 -- | Nested choice.
-e5 = chcA (lit 1) (chcB (lit 2) (lit 4)) `add` lit 3
+e5 = chcA (neg (lit 1)) (chcB (lit 2) (lit 4)) `add` lit 3
 -- | Synchronized nested choice.
-e6 = chcA (lit 1) (lit 2) `add` chcB (lit 3) (chcA (lit 4) (lit 5))
+e6 = chcA (neg (lit 1)) (lit 2) `add` chcB (lit 3) (chcA (lit 4) (lit 5))
