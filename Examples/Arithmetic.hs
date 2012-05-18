@@ -2,8 +2,8 @@
       NoMonomorphismRestriction,
       TypeSynonymInstances #-}
 
--- | Variational math expressions.
-module Examples.MathExpressions where
+-- | Variational arithmetic expressions.
+module Examples.Arithmetic where
 
 import Data.Variational
 
@@ -11,7 +11,7 @@ import Data.Variational
 -- * Object language
 --
 
--- | Simple math expressions in the tagless-final style.
+-- | Simple arithmetic expressions in the tagless-final style.
 class Exp a where
   lit :: Int -> a
   neg :: a -> a
