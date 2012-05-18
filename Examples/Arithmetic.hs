@@ -49,12 +49,12 @@ instance Exp a => Exp (V a) where
   add = compose add
 
 -- | The variation semantics of the evaluated expressions.
-sem :: V Int -> V Int
-sem = id
+veval :: V Int -> V Int
+veval = id
 
 -- | The variation semantics of the pretty-printed expressions.
-sem' :: V String -> V String
-sem' = id
+vpretty :: V String -> V String
+vpretty = id
 
 
 --
