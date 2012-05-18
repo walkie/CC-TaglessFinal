@@ -37,15 +37,13 @@ data DivZero = Ok Int | Error
   deriving (Eq,Show)
   
 instance Exp DivZero where
-  lit n       = Ok n
-  neg Error   = Error
-  neg (Ok n)  = Ok (negate n)
-  add Error _ = Error
-  add _ Error = Error
+  lit n             = Ok n
+  neg (Ok n)        = Ok (negate n)
+  neg _             = Error
   add (Ok l) (Ok r) = Ok (l + r)
+  add _      _      = Error
 
 instance Div DivZero where
-  div Error  _      = Error
-  div _      Error  = Error
   div _      (Ok 0) = Error
   div (Ok n) (Ok d) = Ok (div n d)
+  div _      _      = Error
