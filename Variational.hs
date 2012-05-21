@@ -3,6 +3,7 @@
       PatternGuards,
       TypeSynonymInstances #-}
 
+-- | Variational values and a simple variation metalanguage.
 module Variational where
 
 import Data.List (intersperse)
