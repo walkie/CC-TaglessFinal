@@ -70,11 +70,11 @@ data Result = Result
 
 -- | Compute result.
 result :: DefUse -> Result
-result (DefUse d _ ud uu) = Result ud (d `union` uu)
+result (DefUse d _ u d') = Result u (d `undefion` d')
 
 -- | Pretty print result types.
 instance Show DefUse where
-  show (DefUse d g ud uu) = "(" ++ (commas . map set) [d,g,ud,uu] ++ ")"
+  show (DefUse d g u d') = "(" ++ (commas . map set) [d,g,u,d'] ++ ")"
 instance Show Result where
   show (Result u d) = "undefined: " ++ set u ++ "\tunused: " ++ set d
 
@@ -87,13 +87,13 @@ instance Bind DefUse where
   def v = DefUse (singleton v) empty empty empty
   use v = DefUse empty empty (singleton v) empty
   
-  sub (DefUse d _ ud uu) = DefUse empty empty ud (d `union` uu)
+  sub (DefUse d _ u d') = DefUse empty empty u (d `union` d')
   
-  seq (DefUse da ga uda uua) (DefUse db gb udb uub) =
-    DefUse ((da \\ udb) `union` db) 
-           (ga `union` gb `union` (da `intersection` udb))
-           (uda `union` (udb \\ da))
-           (uua `union` uub)
+  seq (DefUse da ga ua da') (DefUse db gb ub db') =
+    DefUse ((da \\ ub) `union` db) 
+           (ga `union` gb `union` (da `intersection` ub))
+           (ua `union` (ub \\ da))
+           (da' `union` db')
 
 defUse :: V DefUse -> IO ()
 defUse = putStrLn . psem . vmap result
