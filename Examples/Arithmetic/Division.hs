@@ -33,7 +33,7 @@ d1 = e1 `div` (neg (lit 1) `add` chcB (lit 1) (lit 3))
 
 
 --
--- * Divide by zero property
+-- * Safe semantics / divide by zero property
 --
 
 data DivZero = Ok Int | Error
