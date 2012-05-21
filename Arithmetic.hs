@@ -3,9 +3,12 @@
       TypeSynonymInstances #-}
 
 -- | Variational arithmetic expressions.
-module Examples.Arithmetic.Language where
+module Arithmetic where
 
-import Data.Variational
+import Prelude hiding (div)
+import qualified Prelude
+
+import Variational
 
 --
 -- * Object language
@@ -78,3 +81,69 @@ e4 = neg e1 `add` chcB (lit 5) (lit 6 `add` lit 7)
 e5 = chcA (neg (lit 1)) (chcB (lit 2) (lit 4)) `add` lit 3
 -- | Synchronized nested choice.
 e6 = chcA (neg (lit 1)) (lit 2) `add` chcB (lit 3) (chcA (lit 4) (lit 5))
+
+
+--
+-- * Simple properties
+--
+
+-- | Does the expression produce an even value?
+
+newtype Even = Even Bool
+  deriving (Eq,Show)
+
+instance Exp Even where
+  lit = Even . even
+  neg = id
+  add l r = Even (l == r)
+
+
+-- | Is the expression negation free?
+
+newtype NegFree = NegFree Bool
+  deriving (Eq,Show)
+
+instance Exp NegFree where
+  lit _ = NegFree True
+  neg _ = NegFree False
+  add (NegFree l) (NegFree r) = NegFree (l && r)
+
+
+--
+-- * Extend object language with a division operation
+--
+
+class Div a where
+  div :: a -> a -> a
+
+instance Div Int where
+  div = Prelude.div
+
+instance Div String where
+  div l r = "(" ++ l ++ "/" ++ r ++ ")"
+
+instance Div a => Div (V a) where
+  div = compose div
+
+-- | An example expression.
+d1 = e1 `div` (neg (lit 1) `add` chcB (lit 1) (lit 3))
+
+
+--
+-- * Safe semantics / divide by zero property
+--
+
+data DivZero = Ok Int | Error
+  deriving (Eq,Show)
+  
+instance Exp DivZero where
+  lit n             = Ok n
+  neg (Ok n)        = Ok (negate n)
+  neg _             = Error
+  add (Ok l) (Ok r) = Ok (l + r)
+  add _      _      = Error
+
+instance Div DivZero where
+  div _      (Ok 0) = Error
+  div (Ok n) (Ok d) = Ok (div n d)
+  div _      _      = Error

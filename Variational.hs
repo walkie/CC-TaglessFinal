@@ -3,7 +3,7 @@
       PatternGuards,
       TypeSynonymInstances #-}
 
-module Data.Variational where
+module Variational where
 
 import Data.List (intersperse)
 
@@ -36,7 +36,7 @@ instance Show QTag where
 -- * Variational values
 --
 
--- | A variational 'a value is a mapping from decisions to variants of type 'a.
+-- | A variational 'a' value is a mapping from decisions to variants of type 'a'.
 type V a = [(Dec,a)]
 
 -- | Plain value.

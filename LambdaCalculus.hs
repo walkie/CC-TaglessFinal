@@ -3,13 +3,15 @@
       NoMonomorphismRestriction,
       TypeSynonymInstances #-}
 
--- | Variational lambda calculus expressions.
-module Examples.LambdaCalculus.Language where
+-- | Variational untyped lambda calculus expressions.
+module LambdaCalculus where
 
 import Prelude hiding (abs,id,fst,snd)
 import qualified Prelude
 
-import Data.Variational
+import qualified Data.Set as S
+
+import Variational
 
 --
 -- * Syntax of object language
@@ -111,3 +113,21 @@ chcB = chc "B"
 e0 = app2 fst id snd
 -- | Introducing a choice.
 e1 = app2 (chcA fst snd) (ref x) (ref y)
+
+
+-- 
+-- * Compositional property checking
+--
+
+-- ** Free variables
+
+newtype FV = FV (S.Set Var)
+  deriving (Eq,Show)
+
+instance LC FV where
+  ref                 = FV . S.singleton
+  abs v (FV vs)       = FV (S.delete v vs)
+  app (FV ls) (FV rs) = FV (ls `S.union` rs)
+
+fv :: V FV -> IO ()
+fv = putStrLn . psem
