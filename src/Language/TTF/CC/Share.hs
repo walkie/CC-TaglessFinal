@@ -1,4 +1,5 @@
 {-# LANGUAGE
+      FlexibleInstances,
       NoMonomorphismRestriction,
       TypeSynonymInstances #-}
 
@@ -70,7 +71,7 @@ data Result = Result
 
 -- | Compute result.
 result :: DefUse -> Result
-result (DefUse d _ u d') = Result u (d `undefion` d')
+result (DefUse d _ u d') = Result u (d `union` d')
 
 -- | Pretty print result types.
 instance Show DefUse where

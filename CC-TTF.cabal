@@ -17,6 +17,11 @@ source-repository head
   branch:   master
 
 library
-  exposed-modules:  Language.TTF.CC
-  build-depends:    base >=4.6 && <4.7
+  exposed-modules:  Language.TTF.CC.Choice,
+                    Language.TTF.CC.Share,
+                    Language.TTF.Arithmetic,
+                    Language.TTF.Lambda
+  default-language: Haskell2010
+  build-depends:    base >= 4.6 && < 4.7,
+                    containers >= 0.5
   hs-source-dirs:   src

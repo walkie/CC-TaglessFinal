@@ -1,4 +1,5 @@
 {-# LANGUAGE
+      FlexibleInstances,
       NoMonomorphismRestriction,
       TypeSynonymInstances #-}
 
