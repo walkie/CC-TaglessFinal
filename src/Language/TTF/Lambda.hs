@@ -4,14 +4,14 @@
       TypeSynonymInstances #-}
 
 -- | Variational untyped lambda calculus expressions.
-module LambdaCalculus where
+module Language.TTF.Lambda where
 
 import Prelude hiding (abs,id,fst,snd)
 import qualified Prelude
 
 import qualified Data.Set as S
 
-import Variational
+import Language.TTF.CC.Choice
 
 --
 -- * Syntax of object language

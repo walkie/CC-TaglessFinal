@@ -4,7 +4,7 @@
       TypeSynonymInstances #-}
 
 -- | Variational values and a simple variation metalanguage.
-module Variational where
+module Language.TTF.CC.Choice where
 
 import Data.List (intersperse)
 

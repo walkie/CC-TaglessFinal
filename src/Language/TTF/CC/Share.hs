@@ -3,13 +3,13 @@
       TypeSynonymInstances #-}
 
 -- | Variational binding def-use checking.
-module Bindings where
+module Language.TTF.CC.Share where
 
 import Prelude hiding (seq)
 import Data.List (intersperse,sort)
 import Data.Set (Set,(\\),empty,intersection,singleton,toList,union)
 
-import Variational
+import Language.TTF.CC.Choice
 
 --
 -- * Object language

@@ -3,12 +3,12 @@
       TypeSynonymInstances #-}
 
 -- | Variational arithmetic expressions.
-module Arithmetic where
+module Language.TTF.Arithmetic where
 
 import Prelude hiding (div)
 import qualified Prelude
 
-import Variational
+import Language.TTF.CC.Choice
 
 --
 -- * Object language
