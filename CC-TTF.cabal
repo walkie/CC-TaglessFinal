@@ -1,0 +1,22 @@
+name:          CC-TTF
+version:       0.0.0
+synopsis:      A typed-tagless-final implementation of the choice calculus.
+homepage:      https://github.com/walkie/CC-TTF
+bug-reports:   https://github.com/walkie/CC-TTF/issues
+license:       BSD3
+license-file:  LICENSE
+author:        Eric Walkingshaw
+maintainer:    eric@walkingshaw.net
+category:      Language
+build-type:    Simple
+cabal-version: >=1.10
+
+source-repository head
+  type:     git
+  location: https://github.com/walkie/CC-TTF.git
+  branch:   master
+
+library
+  exposed-modules:  Language.TTF.CC
+  build-depends:    base >=4.6 && <4.7
+  hs-source-dirs:   src
