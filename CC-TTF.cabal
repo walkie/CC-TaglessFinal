@@ -28,6 +28,7 @@ library
   exposed-modules:  
     Language.TTF.Arithmetic,
     Language.TTF.Lambda,
+    Language.TTF.Literal,
     Language.TTF.Pretty,
     Language.TTF.CC.Choice,
     Language.TTF.CC.Pretty,

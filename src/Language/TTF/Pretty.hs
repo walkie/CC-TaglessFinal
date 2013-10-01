@@ -11,6 +11,8 @@ import GHC.Exts (IsString(..))
 import System.Console.ANSI
 
 
+-- * Denotations
+
 -- | Semantics domain of pretty printed programs, represented by a list of
 --   strings with corresponding styles.
 newtype Pretty a = Pretty [(Style,String)]
