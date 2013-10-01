@@ -86,10 +86,6 @@ class CC a where
   --   All choices in the same dimension are synchronized.
   chc :: Dim -> a -> a -> a
 
--- | Pretty printer
-instance CC String where
-  chc d l r = d ++ "<" ++ l ++ "," ++ r ++ ">"
-
 -- | Variational evaluator
 instance CC (V a) where
   chc d l r = qualify (Q d L) l ++ qualify (Q d R) r
