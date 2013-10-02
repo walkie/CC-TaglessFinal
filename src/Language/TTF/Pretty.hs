@@ -13,22 +13,26 @@ import System.Console.ANSI
 
 -- * Denotations
 
--- | Semantics domain of pretty printed programs, represented by a list of
---   strings with corresponding styles.
-newtype Pretty a = Pretty [(Style,String)]
-  deriving (Eq,Show,Monoid)
+-- | Semantics domain of pretty printed programs, represented by a function
+--   from some context to a list of strings with corresponding styles.
+newtype Pretty c a = Pretty { inCtx :: c -> [(Style,String)] }
+  deriving Monoid
+
+-- | Stylize a plain string.
+style :: Style -> String -> Pretty c a
+style s x = Pretty $ \_ -> [(s,x)]
 
 -- | String literals are interpreted as unstyled strings.
-instance IsString (Pretty a) where
-  fromString s = Pretty [([],s)]
+instance IsString (Pretty c a) where
+  fromString = style []
 
 -- | Pretty print with style to stdout.
-pretty :: Pretty a -> IO ()
-pretty (Pretty p) = sequence_ [setSGR c >> putStr s | (c,s) <- p]
+pretty :: c -> Pretty c a -> IO ()
+pretty c p = sequence_ [setSGR s >> putStr x | (s,x) <- inCtx p c]
 
 -- | Get the pretty printed string without the style.
-asString :: Pretty a -> String
-asString (Pretty p) = concatMap snd p
+asString :: c -> Pretty c a -> String
+asString c p = concatMap snd (inCtx p c)
 
 
 -- * Styles

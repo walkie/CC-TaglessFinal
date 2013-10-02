@@ -18,8 +18,8 @@ class StringLiteral r where string :: String -> r String
 
 -- * Pretty Printing Instances
 
-instance BoolLiteral   Pretty where bool   = fromString . show
-instance CharLiteral   Pretty where char   = fromString . show
-instance IntLiteral    Pretty where int    = fromString . show
-instance FloatLiteral  Pretty where float  = fromString . show
-instance StringLiteral Pretty where string = fromString . show
+instance BoolLiteral   (Pretty c) where bool   = fromString . show
+instance CharLiteral   (Pretty c) where char   = fromString . show
+instance IntLiteral    (Pretty c) where int    = fromString . show
+instance FloatLiteral  (Pretty c) where float  = fromString . show
+instance StringLiteral (Pretty c) where string = fromString . show
