@@ -1,14 +1,16 @@
 {-# LANGUAGE
       FlexibleInstances,
+      GeneralizedNewtypeDeriving,
+      LiberalTypeSynonyms,
       NoMonomorphismRestriction,
-      OverloadedStrings,
-      LiberalTypeSynonyms
+      OverloadedStrings
   #-}
 
 -- | Variational untyped lambda calculus expressions.
 module Language.TTF.Lambda where
 
-import Data.Monoid ((<>))
+import Data.List (elemIndex,nub)
+import Data.Monoid (Monoid(..),(<>))
 import qualified Data.Set as S
 import GHC.Exts (fromString)
 
@@ -33,6 +35,26 @@ class DeBruijn r where
   dlam  :: r a -> r a
   dapp  :: r a -> r a -> r a
 
+
+-- * Free variables
+
+newtype FreeVars a = FreeVars { unFV :: [Var] -> [Var] }
+  deriving (Monoid)
+
+freeVars :: FreeVars a -> [Var]
+freeVars = nub . flip unFV []
+
+instance Lambda FreeVars where
+  ref v   = FreeVars $ \vs -> if elem v vs then [] else [v]
+  lam v b = FreeVars $ \vs -> unFV b (v:vs)
+  app l r = l <> r
+
+instance DeBruijn FreeVars where
+  bound _ = mempty
+  free  v = FreeVars (const [v])
+  dlam    = id
+  dapp    = (<>)
+  
 
 -- * Pretty Printing
 
