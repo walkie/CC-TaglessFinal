@@ -1,40 +1,44 @@
 {-# LANGUAGE
       FlexibleInstances,
       NoMonomorphismRestriction,
-      TypeSynonymInstances #-}
+      OverloadedStrings,
+      LiberalTypeSynonyms
+  #-}
 
 -- | Variational untyped lambda calculus expressions.
 module Language.TTF.Lambda where
 
-import Prelude hiding (abs,id,fst,snd)
-import qualified Prelude
-
+import Data.Monoid ((<>))
 import qualified Data.Set as S
+import GHC.Exts (fromString)
 
-import Language.TTF.CC.Choice
+import Language.TTF.Pretty
 
---
--- * Syntax of object language
---
 
--- | Variables.
+-- * Syntax
+
+-- | Variables
 type Var = String
 
 -- | Lambda calculus expressions in the tagless-final style.
-class LC a where
-  ref :: Var -> a
-  abs :: Var -> a -> a
-  app :: a -> a -> a
+class Lambda r where
+  ref :: Var -> r a
+  lam :: Var -> r a -> r a
+  app :: r a -> r a -> r a
+
+data LambdaCtx = Top | InL | InR
+  deriving Eq
 
 -- | Pretty printer.
-instance LC String where
-  ref v = v
-  abs v b = "λ" ++ v ++ "." ++ b
-  app l r = "(" ++ l ++ ") (" ++ r ++ ")"
+instance Lambda (Pretty LambdaCtx) where
+  ref v   = fromString v
+  lam v b = Pretty $ \c ->
+    (if c == InL then parens else id)
+    ("λ" <> fromString v <> "." <> inCtx b Top)
+  app l r = Pretty $ \c -> 
+    (if c == InR then parens else id)
+    (inCtx l InL <> " " <> inCtx r InR)
 
--- | Pretty print an expression.
-pretty :: String -> IO ()
-pretty = putStrLn
 
 
 --
