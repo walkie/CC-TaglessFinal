@@ -17,7 +17,7 @@ import Language.TTF.Pretty
 
 -- * Syntax
 
--- | Variables
+-- | Variable names.
 type Var = String
 
 -- | Lambda calculus expressions in the tagless-final style.
@@ -26,19 +26,42 @@ class Lambda r where
   lam :: Var -> r a -> r a
   app :: r a -> r a -> r a
 
+-- | Alternative representation using De Bruijn indices.
+class DeBruijn r where
+  dref :: Int -> r a
+  dlam :: r a -> r a
+  dapp :: r a -> r a -> r a
+
+
+-- * Pretty Printing
+
+-- | Context for pretty printing lambda calculus expressions.
 data LambdaCtx = Top | InL | InR
   deriving Eq
 
--- | Pretty printer.
-instance Lambda (Pretty LambdaCtx) where
-  ref v   = fromString v
-  lam v b = Pretty $ \c ->
-    (if c == InL then parens else id)
-    ("λ" <> fromString v <> "." <> inCtx b Top)
-  app l r = Pretty $ \c -> 
-    (if c == InR then parens else id)
-    (inCtx l InL <> " " <> inCtx r InR)
+-- | Helper function for pretty printing variable references.
+pref :: String -> Pretty LambdaCtx a
+pref = fromString
 
+-- | Helper function for pretty printing lambda abstractions.
+plam :: String -> Pretty LambdaCtx a -> Pretty LambdaCtx a
+plam v b = Pretty $ \c -> if c == InL then parens s else s
+  where s = "λ" <> fromString v <> inCtx b Top
+
+-- | Helper function for pretty printing applications.
+papp :: Pretty LambdaCtx a -> Pretty LambdaCtx a -> Pretty LambdaCtx a
+papp l r = Pretty $ \c -> if c == InR then parens s else s
+  where s = inCtx l InL <> " " <> inCtx r InR
+
+instance Lambda (Pretty LambdaCtx) where
+  ref = pref
+  lam = plam . (++ ".")
+  app = papp
+
+instance DeBruijn (Pretty LambdaCtx) where
+  dref = pref . show
+  dlam = plam ""
+  dapp = papp
 
 
 --
