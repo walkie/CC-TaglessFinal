@@ -11,6 +11,7 @@ module Language.TTF.Lambda where
 
 import Data.List (elemIndex,nub)
 import Data.Monoid (Monoid(..),(<>))
+import Data.Set (Set)
 import qualified Data.Set as S
 import GHC.Exts (fromString)
 
@@ -38,22 +39,20 @@ class DeBruijn r where
 
 -- * Free variables
 
-newtype FreeVars a = FreeVars { unFV :: [Var] -> [Var] }
+-- | Compute the free variables of an expression.
+newtype FreeVars a = FreeVars { freeVars :: Set Var }
   deriving (Monoid)
 
-freeVars :: FreeVars a -> [Var]
-freeVars = nub . flip unFV []
-
 instance Lambda FreeVars where
-  ref v   = FreeVars $ \vs -> if elem v vs then [] else [v]
-  lam v b = FreeVars $ \vs -> unFV b (v:vs)
-  app l r = l <> r
+  ref   = FreeVars . S.singleton
+  lam v = FreeVars . S.delete v . freeVars
+  app   = (<>)
 
 instance DeBruijn FreeVars where
-  bound _ = mempty
-  free  v = FreeVars (const [v])
-  dlam    = id
-  dapp    = (<>)
+  bound = const (FreeVars S.empty)
+  free  = FreeVars . S.singleton
+  dlam  = id
+  dapp  = (<>)
   
 
 -- * Pretty Printing
@@ -172,13 +171,3 @@ e1 = app2 (chcA fst snd) (ref x) (ref y)
 
 -- ** Free variables
 
-newtype FV = FV (S.Set Var)
-  deriving (Eq,Show)
-
-instance LC FV where
-  ref                 = FV . S.singleton
-  abs v (FV vs)       = FV (S.delete v vs)
-  app (FV ls) (FV rs) = FV (ls `S.union` rs)
-
-fv :: V FV -> IO ()
-fv = putStrLn . psem
