@@ -35,7 +35,7 @@ instance IsString (Pretty c a) where
 
 -- | Pretty print with style to stdout.
 pretty :: c -> Pretty c a -> IO ()
-pretty c p = sequence_ [setSGR s >> putStr x | (s,x) <- inCtx p c]
+pretty c p = sequence_ [setSGR s >> putStr x | (s,x) <- inCtx p c] >> putStr "\n"
 
 -- | Get the pretty printed string without the style.
 asString :: c -> Pretty c a -> String
