@@ -28,9 +28,10 @@ class Lambda r where
 
 -- | Alternative representation using De Bruijn indices.
 class DeBruijn r where
-  dref :: Int -> r a
-  dlam :: r a -> r a
-  dapp :: r a -> r a -> r a
+  bound :: Int -> r a
+  free  :: Var -> r a
+  dlam  :: r a -> r a
+  dapp  :: r a -> r a -> r a
 
 
 -- * Pretty Printing
@@ -59,9 +60,10 @@ instance Lambda (Pretty LambdaCtx) where
   app = papp
 
 instance DeBruijn (Pretty LambdaCtx) where
-  dref = pref . show
-  dlam = plam ""
-  dapp = papp
+  bound = pref . show
+  free  = pref
+  dlam  = plam ""
+  dapp  = papp
 
 
 --
