@@ -26,11 +26,11 @@ library
     ansi-terminal >= 0.6
   
   exposed-modules:  
-    Language.TTF.Arithmetic,
+    -- Language.TTF.Arithmetic,
     Language.TTF.Lambda,
     Language.TTF.Literal,
-    Language.TTF.Pretty,
-    Language.TTF.CC.Choice,
-    Language.TTF.CC.Pretty,
-    Language.TTF.CC.Share
+    Language.TTF.Pretty
+    -- Language.TTF.CC.Choice,
+    -- Language.TTF.CC.Pretty,
+    -- Language.TTF.CC.Share
   
