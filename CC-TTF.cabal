@@ -30,8 +30,8 @@ library
     Language.TTF.Lambda,
     Language.TTF.Literal,
     Language.TTF.Pretty
-    -- Language.TTF.CC.Choice,
-    -- Language.TTF.CC.Pretty,
+    Language.TTF.CC.Choice,
+    Language.TTF.CC.Pretty,
     -- Language.TTF.CC.Share
 
 test-suite tests
